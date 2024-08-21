@@ -23,7 +23,7 @@ def parse_cookie(filename: str):
         cookies = json.loads(raw_cook)
     normcookies = []
     for cookie in cookies:
-        normcookies.append({"name": cookie["name"], "value": cookie["value"]})
+        normcookies.append({"name": cookie["name"], "value": cookie["value"], "domain": cookie["domain"]})
     # print(normcookies)
     options = webdriver.FirefoxOptions()
     options.add_argument('--headless')
@@ -32,16 +32,18 @@ def parse_cookie(filename: str):
     with webdriver.Firefox(options=options) as driver:
         # prprint.rnprint("Webdriver loaded")
         driver.get(tturl)
-        # input("Press Enter to get cookies")
-        
         for cookie in normcookies:
             driver.add_cookie(cookie)
+        driver.get(tturl)
+        # input("Press Enter to get cookies")
+        
+        
 
         prprint.rnprint("Cookies loaded!")
         time.sleep(4)
-        driver.refresh()
+        # driver.refresh()
         # prprint.rnprint("Refreshing page")
-        time.sleep(4)
+        # time.sleep(4)
         pr_el = driver.find_element(By.ID, page_url)
         ActionChains(driver).move_to_element(pr_el).pause(1).perform()
         time.sleep(0.3)
